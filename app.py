@@ -17,7 +17,7 @@ from linebot.models import (
 def hello():
     return "Hi web!!"
 
-@app.route("/callback", methods = ["POST"])
+@app.route("/callback", methods = ["GET", "POST"])
 def callback():
     line_json = rq.get_json()
     return "line post!!"
