@@ -1,6 +1,6 @@
 import json as js
-import requests as rq
-from flask import Flask
+
+from flask import Flask, request
 app = Flask(__name__)
 
 from linebot import (
@@ -17,9 +17,9 @@ from linebot.models import (
 def hello():
     return "Hi web!!"
 
-@app.route("/callback", methods = ["GET", "POST"])
+@app.route("/callback", methods = ["POST"])
 def callback():
-    line_json = rq.get_json()
+    line_json = request.get_json()
     return "line post!!"
 
 if __name__ == "__main__":
