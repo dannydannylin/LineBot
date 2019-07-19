@@ -1,4 +1,5 @@
 # import module
+import requests as rq
 import json as js
 import app
 from flask import Flask, request, abort
@@ -40,20 +41,25 @@ def callback():
 
     return "OK"
 
-# @handler.add( MessageEvent, message = TextMessage )
-# def handle_message( event ):
-#     # line_bot_api.reply_message(
-#     #     event.reply_token,
-#     #     TextSendMessage( text = event.message.text ) )
+@handler.add( MessageEvent, message = TextMessage )
+def handle_message( event ):
 
-#     line_bot_api.reply_message(
-#         event.reply_token,
-#         TextSendMessage( text = "Yes Yes Yes" ) )
+    attribute = event.message.text
+    my_params = {"q": attribute}
+    r = rq.get("http://drugtw.com/api/app", params = my_params)
+    threshold = 10
 
-@handler.add( MessageEvent )
-def handle_message( event, destination ):
-    line_bot_api.push_message( event.source.user_id , TextSendMessage( text = "have a good time" ) )
-    print( "user ID : ", str( destination ) )
+    respond = ""
+
+    for i in range( len( js.loads(r.text)["drug_table"] ) ):
+        if i > threshold - 1:
+            break
+        respond = js.loads( r.text )["drug_table"][i]["chi_name"]
+
+    line_bot_api.push_message( event.source.user_id , 
+                                TextSendMessage( text = respond ) )
+
+    
 
 if __name__ == "__main__":
     app.run()
