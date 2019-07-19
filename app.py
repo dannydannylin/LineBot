@@ -54,7 +54,7 @@ def handle_message( event ):
     for i in range( len( js.loads(r.text)["drug_table"] ) ):
         if i > threshold - 1:
             break
-        respond = js.loads( r.text )["drug_table"][i]["chi_name"]
+        respond += js.loads( r.text )["drug_table"][i]["chi_name"]
 
     line_bot_api.push_message( event.source.user_id , 
                                 TextSendMessage( text = respond ) )
