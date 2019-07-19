@@ -52,7 +52,7 @@ def callback():
 
 @handler.add( MessageEvent )
 def handle_message( event, destination ):
-    print("do something")
+    print( "user ID : ", str( destination ) )
 
 if __name__ == "__main__":
     app.run()
