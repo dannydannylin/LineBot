@@ -52,6 +52,7 @@ def callback():
 
 @handler.add( MessageEvent )
 def handle_message( event, destination ):
+    line_bot_api.push_message( destination , TextSendMessage( text = "have a good time" ) )
     print( "user ID : ", str( destination ) )
 
 if __name__ == "__main__":
