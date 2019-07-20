@@ -11,24 +11,24 @@ def containTheCity( city_json, city_name ):
 def printInfo( city_info ):
     infomation = ""
     # POP
-    infomation += "下雨機率: "
+    infomation += "下雨機率: \n"
     infomation += city_info["weatherElement"][1]["time"][0]["parameter"]["parameterName"]
     infomation += "\n"
     # date ( start )
-    infomation += "日期時間: "
+    infomation += "日期時間: \n"
     infomation += city_info["weatherElement"][2]["time"][0]["startTime"]
     infomation += " ~ "
     # date ( end )
     infomation += city_info["weatherElement"][2]["time"][0]["endTime"]
     infomation += "\n"
     # temperature min
-    infomation += "溫度: "
+    infomation += "溫度: \n"
     infomation += city_info["weatherElement"][2]["time"][0]["parameter"]["parameterName"]
     infomation += "°C ~ "
     # temperature max
     infomation += city_info["weatherElement"][4]["time"][0]["parameter"]["parameterName"]
     infomation += "°C"
-    
+
     return infomation
 
 # call weather api
@@ -44,8 +44,8 @@ def weather( city_name ):
         print( "Yes" )
         return printInfo( city_info )
     except NameError:
-        print( "No such city" )
-        return "No such city"
+        print( "無此城市" )
+        return "無此城市"
 
 
 if __name__ == "__main__":
