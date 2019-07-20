@@ -4,6 +4,8 @@ import json as js
 import app
 from flask import Flask, request, abort
 
+import weather
+
 app = Flask(__name__)
 
 from linebot import (
@@ -43,21 +45,11 @@ def callback():
 
 @handler.add( MessageEvent, message = TextMessage )
 def handle_message( event ):
-
-    attribute = event.message.text
-    my_params = {"q": attribute}
-    r = rq.get("http://drugtw.com/api/app", params = my_params)
-    threshold = 10
-
-    respond = ""
-
-    for i in range( len( js.loads(r.text)["drug_table"] ) ):
-        if i > threshold - 1:
-            break
-        respond += js.loads( r.text )["drug_table"][i]["chi_name"] + "\n"
+    # weather info
+    info = weather.weather( event.reply_token )
 
     line_bot_api.push_message( event.source.user_id , 
-                                TextSendMessage( text = respond ) )
+                                TextSendMessage( text = info ) )
 
     
 
