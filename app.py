@@ -46,7 +46,7 @@ def callback():
 @handler.add( MessageEvent, message = TextMessage )
 def handle_message( event ):
     # weather info
-    info = weather.weather( event.reply_token )
+    info = weather.weather( event.message.text )
 
     line_bot_api.push_message( event.source.user_id , 
                                 TextSendMessage( text = info ) )
