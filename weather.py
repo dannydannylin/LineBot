@@ -47,7 +47,7 @@ class WeatherAPI():
     def getWeather( self, city_name ):
         city_name = self.splitCityName( city_name )
 
-        r1 = requests.get( "opendataAPI" )
+        r1 = requests.get( "https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-75773CF6-8ADD-46F3-B04F-690EE0A930DA" )
         r1.encoding='utf8'
 
         j = json.loads( r1.text )
