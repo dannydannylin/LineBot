@@ -1,52 +1,58 @@
 import requests
 import json
 
-# contain this city
-def containTheCity( city_json, city_name ):
-    for city in city_json:
-        if city["locationName"] == city_name:
-            return city
-    raise NameError
+class WeatherAPI():
 
-def printInfo( city_info ):
-    infomation = ""
-    # POP
-    infomation += "下雨機率 : "
-    infomation += city_info["weatherElement"][1]["time"][0]["parameter"]["parameterName"]
-    infomation += "%\n"
-    # date ( start )
-    infomation += "日期時間 : \n"
-    infomation += city_info["weatherElement"][2]["time"][0]["startTime"]
-    infomation += " ~ "
-    # date ( end )
-    infomation += city_info["weatherElement"][2]["time"][0]["endTime"]
-    infomation += "\n"
-    # temperature min
-    infomation += "溫度 : "
-    infomation += city_info["weatherElement"][2]["time"][0]["parameter"]["parameterName"]
-    infomation += "°C ~ "
-    # temperature max
-    infomation += city_info["weatherElement"][4]["time"][0]["parameter"]["parameterName"]
-    infomation += "°C"
+    def __init__( self ):
+        pass
 
-    return infomation
+    # contain this city
+    def containTheCity( self, city_json, city_name ):
+        for city in city_json:
+            if city["locationName"] == city_name:
+                return city
+        raise NameError
 
-# call weather api
-def weather( city_name ):
+    def printInfo( self, city_info ):
+        infomation = ""
+        # POP
+        infomation += "下雨機率 : "
+        infomation += city_info["weatherElement"][1]["time"][0]["parameter"]["parameterName"]
+        infomation += "%\n"
+        # date ( start )
+        infomation += "日期時間 : \n"
+        infomation += city_info["weatherElement"][2]["time"][0]["startTime"]
+        infomation += " ~ "
+        # date ( end )
+        infomation += city_info["weatherElement"][2]["time"][0]["endTime"]
+        infomation += "\n"
+        # temperature min
+        infomation += "溫度 : "
+        infomation += city_info["weatherElement"][2]["time"][0]["parameter"]["parameterName"]
+        infomation += "°C ~ "
+        # temperature max
+        infomation += city_info["weatherElement"][4]["time"][0]["parameter"]["parameterName"]
+        infomation += "°C"
 
-    r1 = requests.get( "https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-75773CF6-8ADD-46F3-B04F-690EE0A930DA" )
-    r1.encoding='utf8'
+        return infomation
 
-    j = json.loads( r1.text )
+    # call weather api
+    def getWeather( self, city_name ):
 
-    try:
-        city_info = containTheCity( j["records"]["location"], city_name )
-        print( "Yes" )
-        return printInfo( city_info )
-    except NameError:
-        print( "無此城市" )
-        return "無此城市"
+        r1 = requests.get( "https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-75773CF6-8ADD-46F3-B04F-690EE0A930DA" )
+        r1.encoding='utf8'
+
+        j = json.loads( r1.text )
+
+        try:
+            city_info = self.containTheCity( j["records"]["location"], city_name )
+            print( "Yes" )
+            return self.printInfo( city_info )
+        except NameError:
+            print( "無此城市" )
+            return "無此城市"
 
 
 if __name__ == "__main__":
-    weather( "新北市" )
+    my_weather = WeatherAPI()
+    print( WeatherAPI.getWeather( my_weather, "新北市" ) )
