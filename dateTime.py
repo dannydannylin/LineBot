@@ -1,6 +1,6 @@
 import time
 from datetime import datetime
-import pytz
+# import pytz
 
 
 class TimeAPI():
@@ -8,10 +8,10 @@ class TimeAPI():
         pass
 
     def getTime( self ):
-        tw = pytz.timezone( "Asia/Taipei" )
-        print( datetime.now( tw ).strftime( "%Y-%m-%d %H:%M:%S" ) )
-        return datetime.now( tw ).strftime( "%Y-%m-%d %H:%M:%S" )
-        
+        # tw = pytz.timezone( "Asia/Taipei" )
+        # print( datetime.now( tw ).strftime( "%Y-%m-%d %H:%M:%S" ) )
+        # return datetime.now( tw ).strftime( "%Y-%m-%d %H:%M:%S" )
+        return 0
 
 if __name__ == "__main__":
     my_time = TimeAPI()
