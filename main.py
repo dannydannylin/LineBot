@@ -46,44 +46,32 @@ def callback():
 @handler.add( MessageEvent, message = TextMessage )
 def handle_message( event ):
 
-    # send opening words
-    opening_words = "嗨，你好，請選擇您要查詢天氣或時間，"
-    opening_words += "如果您要查詢天氣請打\"天氣\"，"
-    opening_words += "如果您要查詢時間請打\"時間\"，"
-
-    line_bot_api.push_message( event.source.user_id , 
-                    TextSendMessage( text = opening_words ) )
-
-    # input message ( choose which item do you want to inquire )
     msg = event.message.text
 
-    if msg == "天氣":
+    if not( '天氣' in msg ) and ( msg != "時間" ):
+        # send opening words
+        opening_words = "嗨，你好，請選擇您要查詢天氣或時間，"
+        opening_words += "如果您要查詢天氣請打\"XXX天氣\"(ex. 台北市天氣)，"
+        opening_words += "如果您要查詢時間請打\"時間\"，"
 
         line_bot_api.push_message( event.source.user_id , 
-                TextSendMessage( text = "您好，若想跳出天氣查詢請輸入\"滾\"" ) )
+                        TextSendMessage( text = opening_words ) )
 
-        while True:
+    elif '天氣' in msg:
 
-            line_bot_api.push_message( event.source.user_id , 
-                            TextSendMessage( text = "請輸入要查詢的城市(ex. 新北市)" ) )
+        # weather info
+        my_weather = weather.WeatherAPI()
+        info = my_weather.getWeather( msg )
 
-            # input message ( choose which city do you want to inquire )
-            msg = event.message.text
-
-            if msg == "滾":
-                break
-
-            # weather info
-            my_weather = weather.WeatherAPI()
-            info = my_weather.getWeather( msg )
-
-            line_bot_api.push_message( event.source.user_id , 
-                                        TextSendMessage( text = info ) )
+        line_bot_api.push_message( event.source.user_id , 
+                                    TextSendMessage( text = info ) )
 
     elif msg == "時間":
 
         my_dateTime = dateTime.TimeAPI()
         info = my_dateTime.getTime()
+        line_bot_api.push_message( event.source.user_id , 
+                                    TextSendMessage( text = info ) )
 
 if __name__ == "__main__":
     app.run()

@@ -36,8 +36,16 @@ class WeatherAPI():
 
         return infomation
 
+    def splitCityName( self, city_name ):
+        name = ""
+        for word in city_name:
+            if word != "天" and word != "氣" and word != " ":
+                name += word
+        return name
+
     # call weather api
-    def getWeather( self, city_name ):
+    def getWeather( self, splitCityName ):
+        splitCityName = self.splitCityName( splitCityName )
 
         r1 = requests.get( "https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-75773CF6-8ADD-46F3-B04F-690EE0A930DA" )
         r1.encoding='utf8'
