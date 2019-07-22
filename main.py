@@ -15,7 +15,8 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, FollowEvent, UnfollowEvent,
+    StickerMessage, StickerSendMessage
 )
 
 line_bot_api = LineBotApi("6S5y3NrPtinBzdKDiArf/AoCyJwpimZtov/uQbod/1gTtZGU+Kaapc23A5DYIpRosCBfBKk+YdqqNOXi5EmnqaqCmG4CetaCfdnkxH0QE2lKy0ulvGwF0geDSUV9qfYW1ioFU49EEbxFpzdgKGHBBQdB04t89/1O/w1cDnyilFU=")
@@ -38,10 +39,27 @@ def callback():
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
-        print("Invalid signature. Please check your channel access token/channel secret.")
+        print( "Invalid signature. Please check your channel access token/channel secret." )
         abort( 400 )
 
     return "OK"
+
+@handler.add( FollowEvent )
+def handle_follow( event ):
+    line_bot_api.push_message( event.source.user_id , 
+                        TextSendMessage( text = "謝謝您家我好友" ) )
+
+
+@handler.add( UnfollowEvent )
+def handle_unfollow( event ):
+    line_bot_api.push_message( event.source.user_id , 
+                        TextSendMessage( text = "快滾吧" ) )
+
+@handler.add( MessageEvent, message = StickerMessage )
+def handle_sticker_message( event ):
+    line_bot_api.push_message( event.source.user_id , 
+        StickerSendMessage( package_id = 11537, sticker_id = 52002745 ) )
+
 
 @handler.add( MessageEvent, message = TextMessage )
 def handle_message( event ):
