@@ -50,9 +50,9 @@ def handle_message( event ):
 
     if not( '天氣' in msg ) and ( msg != "時間" ):
         # send opening words
-        opening_words = "嗨，你好，請選擇您要查詢天氣或時間，"
-        opening_words += "如果您要查詢天氣請打\"XXX天氣\"(ex. 台北市天氣)，"
-        opening_words += "如果您要查詢時間請打\"時間\"，"
+        opening_words = "嗨，您好，請選擇您要查詢天氣或時間，"
+        opening_words += "如果您要查詢天氣請打\"XXX天氣\"(ex. 臺北市天氣)，"
+        opening_words += "如果您要查詢時間請打\"時間\"。"
 
         line_bot_api.push_message( event.source.user_id , 
                         TextSendMessage( text = opening_words ) )
