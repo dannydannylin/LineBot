@@ -20,8 +20,8 @@ from linebot.models import (
     StickerMessage, StickerSendMessage
 )
 
-line_bot_api = LineBotApi("6S5y3NrPtinBzdKDiArf/AoCyJwpimZtov/uQbod/1gTtZGU+Kaapc23A5DYIpRosCBfBKk+YdqqNOXi5EmnqaqCmG4CetaCfdnkxH0QE2lKy0ulvGwF0geDSUV9qfYW1ioFU49EEbxFpzdgKGHBBQdB04t89/1O/w1cDnyilFU=")
-handler = WebhookHandler("4339579df5c5d5b9451aba0af8434776")
+line_bot_api = LineBotApi("ACCESS_TOKEN")
+handler = WebhookHandler("SECRET")
 
 def sticker():
     package_id = random.randint( 11537, 11539 )
