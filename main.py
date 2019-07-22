@@ -1,6 +1,7 @@
 # import module
 import requests as rq
 import json as js
+import random
 from flask import Flask, request, abort
 
 import weather
@@ -21,6 +22,18 @@ from linebot.models import (
 
 line_bot_api = LineBotApi("6S5y3NrPtinBzdKDiArf/AoCyJwpimZtov/uQbod/1gTtZGU+Kaapc23A5DYIpRosCBfBKk+YdqqNOXi5EmnqaqCmG4CetaCfdnkxH0QE2lKy0ulvGwF0geDSUV9qfYW1ioFU49EEbxFpzdgKGHBBQdB04t89/1O/w1cDnyilFU=")
 handler = WebhookHandler("4339579df5c5d5b9451aba0af8434776")
+
+def sticker():
+    package_id = random.randint( 11537, 11539 )
+
+    if package_id == 11537:
+        sticker_id = random.randint( 52002734, 52002779 )
+    elif package_id == 11538 :
+        sticker_id = random.randint( 51626494, 51626533 )
+    else:
+        sticker_id = random.randint( 52114110, 52114149 )
+
+    return package_id, sticker_id
 
 @app.route("/", methods = ["GET"])
 def hello():
@@ -46,9 +59,13 @@ def callback():
 
 @handler.add( FollowEvent )
 def handle_follow( event ):
-    line_bot_api.push_message( event.source.user_id , 
-                        TextSendMessage( text = "謝謝您家我好友" ) )
 
+    package_id, sticker_id = sticker()
+
+    line_bot_api.push_message( event.source.user_id , 
+                        TextSendMessage( text = "謝謝您加我好友" ) )
+    line_bot_api.push_message( event.source.user_id , 
+        StickerSendMessage( package_id = package_id, sticker_id = sticker_id ) )
 
 @handler.add( UnfollowEvent )
 def handle_unfollow( event ):
@@ -57,8 +74,11 @@ def handle_unfollow( event ):
 
 @handler.add( MessageEvent, message = StickerMessage )
 def handle_sticker_message( event ):
+
+    package_id, sticker_id = sticker()
+
     line_bot_api.push_message( event.source.user_id , 
-        StickerSendMessage( package_id = 11537, sticker_id = 52002745 ) )
+        StickerSendMessage( package_id = package_id, sticker_id = sticker_id ) )
 
 
 @handler.add( MessageEvent, message = TextMessage )
